@@ -1,0 +1,123 @@
+{
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "xrayAnalysis": "X-Ray Analysis",
+    "reportInterpretation": "Report Interpretation",
+    "symptomChecker": "Symptom Checker",
+    "medicalChat": "Medical Chat",
+    "help": "Help & Support",
+    "settings": "Settings",
+    "language": "Language"
+  },
+  "dashboard": {
+    "welcome": "Welcome to MediaID AI",
+    "description": "Your safety-focused medical AI assistant. How can I help you today?",
+    "getStarted": "Get Started",
+    "features": {
+      "xray": {
+        "title": "X-Ray Analysis",
+        "description": "Upload an X-ray to get an educational analysis."
+      },
+      "report": {
+        "title": "Report Interpretation",
+        "description": "Paste a medical report for a simplified explanation."
+      },
+      "symptoms": {
+        "title": "Symptom Checker",
+        "description": "Describe your symptoms for informational guidance."
+      },
+      "chat": {
+        "title": "Medical AI Chat",
+        "description": "Ask health-related questions in a supportive chat."
+      }
+    }
+  },
+  "chat": {
+    "title": "Medical AI Chat",
+    "description": "Ask your health-related questions in a safe and supportive space.",
+    "initialMessage": "Hello! I am MediaID AI. How can I assist you with your health questions today?",
+    "inputPlaceholder": "Type your message...",
+    "send": "Send",
+    "errorTitle": "An error occurred",
+    "errorMessage": "Failed to get a response from the AI. Please try again."
+  },
+  "emergency": {
+    "title": "Potential Emergency Detected",
+    "description": "Based on your input, your situation may require immediate medical attention.",
+    "advice": "Please do not delay seeking care. Contact your local emergency services, go to the nearest emergency room, or consult a healthcare professional immediately.",
+    "understand": "I Understand"
+  },
+  "report": {
+    "title": "Medical Report Interpretation",
+    "description": "Paste your medical report below to get a simplified, easy-to-understand explanation.",
+    "placeholder": "Paste the full text of your medical report here...",
+    "validationError": "Medical report text must be at least 20 characters.",
+    "button": "Interpret Report",
+    "analyzingTitle": "Analyzing Report...",
+    "analyzingDescription": "Please wait while our AI interprets your report.",
+    "resultTitle": "Simplified Explanation",
+    "disclaimer": "Disclaimer: This is not a professional medical diagnosis and should be used for informational purposes only. Always consult with a licensed doctor or qualified healthcare provider for any medical concerns."
+  },
+  "symptoms": {
+    "title": "Symptom-Based Guidance",
+    "description": "Describe your symptoms to receive a list of possible causes for informational purposes.",
+    "form": {
+      "symptomsLabel": "Describe your symptoms",
+      "symptomsPlaceholder": "e.g., 'I have a persistent cough, slight fever, and feel very tired.'",
+      "symptomsValidationError": "Please describe your symptoms in at least 10 characters.",
+      "ageLabel": "Age",
+      "agePlaceholder": "e.g., 34",
+      "genderLabel": "Gender",
+      "genderPlaceholder": "Select gender",
+      "genders": {
+        "male": "Male",
+        "female": "Female",
+        "other": "Other"
+      },
+      "durationLabel": "Duration",
+      "durationPlaceholder": "e.g., '3 days'",
+      "severityLabel": "Severity",
+      "severityPlaceholder": "Select severity",
+      "severities": {
+        "mild": "Mild",
+        "moderate": "Moderate",
+        "severe": "Severe"
+      },
+      "button": "Get Guidance"
+    },
+    "results": {
+      "title": "Possible Causes",
+      "urgency": "Urgency: {level}",
+      "levels": {
+        "routine": "routine",
+        "consult-soon": "consult soon",
+        "emergency": "emergency"
+      }
+    },
+    "disclaimer": "Disclaimer: MediaID AI provides educational and informational health insights only. This is not a professional medical diagnosis and must not be used as a substitute for consultation, diagnosis, or treatment by a licensed doctor or qualified healthcare provider."
+  },
+  "xray": {
+    "title": "X-Ray & Imaging Analysis",
+    "description": "Upload an X-ray image for an educational analysis. This tool is for informational purposes only.",
+    "upload": {
+      "title": "Upload Image",
+      "description": "Drop your X-ray image here or click to upload.",
+      "dragActive": "Drop the image here...",
+      "dragInactive": "Drag 'n' drop an image, or click to select",
+      "fileTypes": "(PNG, JPG, JPEG)",
+      "clear": "Clear image",
+      "button": "Analyze Image"
+    },
+    "analysis": {
+      "analyzingTitle": "Analyzing...",
+      "analyzingDescription": "Our AI is looking at your image. This may take a moment.",
+      "resultsTitle": "Analysis Results",
+      "concernLevel": {
+        "low": "Low Concern",
+        "moderate": "Moderate Concern",
+        "high": "High Concern"
+      },
+      "disclaimer": "Disclaimer: {disclaimerText}"
+    }
+  }
+}

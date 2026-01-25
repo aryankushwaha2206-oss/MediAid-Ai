@@ -30,8 +30,15 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { useLocale } from '@/hooks/use-locale';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2, AlertTriangle, Activity, BadgeCheck, Clock } from 'lucide-react';
+import {
+  Loader2,
+  AlertTriangle,
+  Activity,
+  BadgeCheck,
+  Clock,
+} from 'lucide-react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -40,20 +47,20 @@ import { SymptomBasedGuidanceOutput } from '@/ai/flows/symptom-based-guidance';
 import { Badge } from './ui/badge';
 import { cn } from '@/lib/utils';
 
-const formSchema = z.object({
-  symptoms: z
-    .string()
-    .min(10, 'Please describe your symptoms in at least 10 characters.'),
-  age: z.coerce.number().min(0).optional(),
-  gender: z.string().optional(),
-  duration: z.string().optional(),
-  severity: z.enum(['mild', 'moderate', 'severe']).optional(),
-});
-
-type FormValues = z.infer<typeof formSchema>;
-
 export default function SymptomCheckerForm() {
-  const [result, setResult] = useState<SymptomBasedGuidanceOutput | null>(null);
+  const { t, locale } = useLocale();
+  const formSchema = z.object({
+    symptoms: z.string().min(10, t('symptoms.form.symptomsValidationError')),
+    age: z.coerce.number().min(0).optional(),
+    gender: z.string().optional(),
+    duration: z.string().optional(),
+    severity: z.enum(['mild', 'moderate', 'severe']).optional(),
+  });
+  type FormValues = z.infer<typeof formSchema>;
+
+  const [result, setResult] = useState<SymptomBasedGuidanceOutput | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [isEmergency, setIsEmergency] = useState(false);
   const { toast } = useToast();
@@ -70,14 +77,20 @@ export default function SymptomCheckerForm() {
     setResult(null);
 
     try {
-      const emergencyResult = await detectEmergencyAction({ userInput: values.symptoms });
+      const emergencyResult = await detectEmergencyAction({
+        userInput: values.symptoms,
+        language: locale,
+      });
       if (emergencyResult.isEmergency) {
         setIsEmergency(true);
         setIsLoading(false);
         return;
       }
 
-      const guidanceResult = await symptomBasedGuidanceAction(values);
+      const guidanceResult = await symptomBasedGuidanceAction({
+        ...values,
+        language: locale,
+      });
 
       if (guidanceResult.error) {
         throw new Error(guidanceResult.error);
@@ -88,9 +101,8 @@ export default function SymptomCheckerForm() {
       console.error(error);
       toast({
         variant: 'destructive',
-        title: 'An error occurred',
-        description:
-          'Failed to get guidance. Please try again.',
+        title: t('chat.errorTitle'),
+        description: t('chat.errorMessage'),
       });
     } finally {
       setIsLoading(false);
@@ -108,6 +120,11 @@ export default function SymptomCheckerForm() {
     }
   };
 
+  const getUrgencyLevelText = (urgency: string) => {
+    const key = `symptoms.results.levels.${urgency.replace(' ', '-')}`;
+    return t(key);
+  };
+
   return (
     <>
       <Card>
@@ -120,11 +137,11 @@ export default function SymptomCheckerForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-base">
-                      Describe your symptoms
+                      {t('symptoms.form.symptomsLabel')}
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="e.g., 'I have a persistent cough, slight fever, and feel very tired.'"
+                        placeholder={t('symptoms.form.symptomsPlaceholder')}
                         className="min-h-[120px]"
                         {...field}
                       />
@@ -140,9 +157,13 @@ export default function SymptomCheckerForm() {
                   name="age"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Age</FormLabel>
+                      <FormLabel>{t('symptoms.form.ageLabel')}</FormLabel>
                       <FormControl>
-                        <Input type="number" placeholder="e.g., 34" {...field} />
+                        <Input
+                          type="number"
+                          placeholder={t('symptoms.form.agePlaceholder')}
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -153,20 +174,30 @@ export default function SymptomCheckerForm() {
                   name="gender"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Gender</FormLabel>
+                      <FormLabel>{t('symptoms.form.genderLabel')}</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select gender" />
+                            <SelectValue
+                              placeholder={t(
+                                'symptoms.form.genderPlaceholder'
+                              )}
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="male">Male</SelectItem>
-                          <SelectItem value="female">Female</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
+                          <SelectItem value="male">
+                            {t('symptoms.form.genders.male')}
+                          </SelectItem>
+                          <SelectItem value="female">
+                            {t('symptoms.form.genders.female')}
+                          </SelectItem>
+                          <SelectItem value="other">
+                            {t('symptoms.form.genders.other')}
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -178,9 +209,12 @@ export default function SymptomCheckerForm() {
                   name="duration"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Duration</FormLabel>
+                      <FormLabel>{t('symptoms.form.durationLabel')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., '3 days'" {...field} />
+                        <Input
+                          placeholder={t('symptoms.form.durationPlaceholder')}
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -191,20 +225,30 @@ export default function SymptomCheckerForm() {
                   name="severity"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Severity</FormLabel>
+                      <FormLabel>{t('symptoms.form.severityLabel')}</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select severity" />
+                            <SelectValue
+                              placeholder={t(
+                                'symptoms.form.severityPlaceholder'
+                              )}
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="mild">Mild</SelectItem>
-                          <SelectItem value="moderate">Moderate</SelectItem>
-                          <SelectItem value="severe">Severe</SelectItem>
+                          <SelectItem value="mild">
+                            {t('symptoms.form.severities.mild')}
+                          </SelectItem>
+                          <SelectItem value="moderate">
+                            {t('symptoms.form.severities.moderate')}
+                          </SelectItem>
+                          <SelectItem value="severe">
+                            {t('symptoms.form.severities.severe')}
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -213,24 +257,32 @@ export default function SymptomCheckerForm() {
                 />
               </div>
 
-              <Button type="submit" disabled={isLoading} className="w-full md:w-auto">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full md:w-auto"
+              >
                 {isLoading ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
                   <Activity className="mr-2 h-4 w-4" />
                 )}
-                Get Guidance
+                {t('symptoms.form.button')}
               </Button>
             </form>
           </Form>
         </CardContent>
       </Card>
 
-      {isLoading && <Loader2 className="mx-auto mt-8 h-8 w-8 animate-spin text-primary" />}
+      {isLoading && (
+        <Loader2 className="mx-auto mt-8 h-8 w-8 animate-spin text-primary" />
+      )}
 
       {result && (
         <div className="mt-8 space-y-6">
-          <h2 className="text-2xl font-bold font-headline">Possible Causes</h2>
+          <h2 className="text-2xl font-bold font-headline">
+            {t('symptoms.results.title')}
+          </h2>
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {result.possibleCauses?.map((item, index) => (
               <Card key={index}>
@@ -240,13 +292,20 @@ export default function SymptomCheckerForm() {
                     {item.cause}
                   </CardTitle>
                   <CardDescription>
-                    <Badge variant={
-                      item.urgency === 'emergency' ? 'destructive' :
-                      item.urgency === 'consult soon' ? 'secondary' : 'default'
-                    } className={cn(
-                      item.urgency === 'consult soon' && 'bg-amber-100 text-amber-800 border-amber-200'
-                    )}>
-                      Urgency: {item.urgency.replace('-', ' ')}
+                    <Badge
+                      variant={
+                        item.urgency === 'emergency'
+                          ? 'destructive'
+                          : item.urgency === 'consult soon'
+                          ? 'secondary'
+                          : 'default'
+                      }
+                      className={cn(
+                        item.urgency === 'consult soon' &&
+                          'bg-amber-100 text-amber-800 border-amber-200'
+                      )}
+                    >
+                      {t('symptoms.results.urgency', { level: getUrgencyLevelText(item.urgency) })}
                     </Badge>
                   </CardDescription>
                 </CardHeader>
@@ -257,7 +316,10 @@ export default function SymptomCheckerForm() {
             ))}
           </div>
           <div className="mt-4 rounded-md border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
-            <p><strong>Disclaimer:</strong> {result.disclaimer}</p>
+            <p>
+              <strong>{t('symptoms.disclaimer').split(':')[0]}:</strong>{' '}
+              {result.disclaimer}
+            </p>
           </div>
         </div>
       )}

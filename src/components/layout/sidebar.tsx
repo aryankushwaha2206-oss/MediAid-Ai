@@ -20,31 +20,43 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Badge } from '../ui/badge';
-
-const menuItems = [
-  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/x-ray-analysis', label: 'X-Ray Analysis', icon: ScanLine },
-  { href: '/report-interpretation', label: 'Report Interpretation', icon: FileText },
-  { href: '/symptom-checker', label: 'Symptom Checker', icon: ListPlus },
-  { href: '/chat', label: 'Medical Chat', icon: MessageSquare },
-];
+import { useLocale } from '@/hooks/use-locale';
+import LanguageSwitcher from '../language-switcher';
 
 export default function AppSidebar() {
   const pathname = usePathname();
+  const { t } = useLocale();
+
+  const menuItems = [
+    { href: '/', label: t('sidebar.dashboard'), icon: LayoutDashboard },
+    {
+      href: '/x-ray-analysis',
+      label: t('sidebar.xrayAnalysis'),
+      icon: ScanLine,
+    },
+    {
+      href: '/report-interpretation',
+      label: t('sidebar.reportInterpretation'),
+      icon: FileText,
+    },
+    {
+      href: '/symptom-checker',
+      label: t('sidebar.symptomChecker'),
+      icon: ListPlus,
+    },
+    { href: '/chat', label: t('sidebar.medicalChat'), icon: MessageSquare },
+  ];
 
   return (
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center gap-2">
           <Logo className="size-8" />
-          <span className="text-lg font-semibold font-headline">
-            MediaID
-          </span>
+          <span className="text-lg font-semibold font-headline">MediaID</span>
         </div>
       </SidebarHeader>
       <SidebarMenu className="flex-1">
-        {menuItems.map((item) => (
+        {menuItems.map(item => (
           <SidebarMenuItem key={item.href}>
             <Link href={item.href} legacyBehavior passHref>
               <SidebarMenuButton
@@ -61,15 +73,18 @@ export default function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Help & Support">
+            <LanguageSwitcher />
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton tooltip={t('sidebar.help')}>
               <LifeBuoy />
-              <span>Help & Support</span>
+              <span>{t('sidebar.help')}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Settings">
+            <SidebarMenuButton tooltip={t('sidebar.settings')}>
               <Settings />
-              <span>Settings</span>
+              <span>{t('sidebar.settings')}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

@@ -3,6 +3,7 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import AppLayout from '@/components/layout/app-layout';
+import { LocaleProvider } from '@/hooks/use-locale';
 
 export const metadata: Metadata = {
   title: 'MediaID AI Assistant',
@@ -25,7 +26,9 @@ export default function RootLayout({
         />
       </head>
       <body className={cn('font-body antialiased')}>
-        <AppLayout>{children}</AppLayout>
+        <LocaleProvider>
+          <AppLayout>{children}</AppLayout>
+        </LocaleProvider>
         <Toaster />
       </body>
     </html>

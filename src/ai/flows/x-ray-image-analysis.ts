@@ -18,17 +18,33 @@ const AnalyzeXRayImageInputSchema = z.object({
     .describe(
       "An X-ray image, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
     ),
+  language: z
+    .string()
+    .optional()
+    .describe(
+      'The language for the response (e.g., "English", "Spanish"). Defaults to English.'
+    ),
 });
 export type AnalyzeXRayImageInput = z.infer<typeof AnalyzeXRayImageInputSchema>;
 
 const AnalyzeXRayImageOutputSchema = z.object({
-  explanation: z.string().describe('A simplified explanation of the X-ray image.'),
-  concernLevel: z.enum(['low', 'moderate', 'high']).describe('The level of concern associated with the findings.'),
-  disclaimer: z.string().describe('Mandatory disclaimer regarding the AI analysis.'),
+  explanation: z
+    .string()
+    .describe('A simplified explanation of the X-ray image.'),
+  concernLevel: z
+    .enum(['low', 'moderate', 'high'])
+    .describe('The level of concern associated with the findings.'),
+  disclaimer: z
+    .string()
+    .describe('Mandatory disclaimer regarding the AI analysis.'),
 });
-export type AnalyzeXRayImageOutput = z.infer<typeof AnalyzeXRayImageOutputSchema>;
+export type AnalyzeXRayImageOutput = z.infer<
+  typeof AnalyzeXRayImageOutputSchema
+>;
 
-export async function analyzeXRayImage(input: AnalyzeXRayImageInput): Promise<AnalyzeXRayImageOutput> {
+export async function analyzeXRayImage(
+  input: AnalyzeXRayImageInput
+): Promise<AnalyzeXRayImageOutput> {
   return analyzeXRayImageFlow(input);
 }
 
@@ -37,6 +53,8 @@ const prompt = ai.definePrompt({
   input: {schema: AnalyzeXRayImageInputSchema},
   output: {schema: AnalyzeXRayImageOutputSchema},
   prompt: `You are MediaID AI, a safety-focused medical AI assistant designed to help users understand X-ray images. Analyze the X-ray image and provide a simplified explanation of any visible structures, potential abnormalities, and a concern level (low, moderate, high). Always include the disclaimer.
+
+  Your response MUST be in the following language: {{{language}}}.
 
 X-Ray Image: {{media url=photoDataUri}}
 
@@ -50,10 +68,14 @@ const analyzeXRayImageFlow = ai.defineFlow(
     outputSchema: AnalyzeXRayImageOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
+    const {output} = await prompt({
+      ...input,
+      language: input.language || 'English',
+    });
     return {
       ...output!,
-      disclaimer: 'MediaID AI provides educational and informational health insights only. This is not a professional medical diagnosis and must not be used as a substitute for consultation, diagnosis, or treatment by a licensed doctor or qualified healthcare provider.',
+      disclaimer:
+        'MediaID AI provides educational and informational health insights only. This is not a professional medical diagnosis and must not be used as a substitute for consultation, diagnosis, or treatment by a licensed doctor or qualified healthcare provider.',
     };
   }
 );

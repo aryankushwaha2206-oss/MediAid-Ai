@@ -15,6 +15,12 @@ const MedicalReportInputSchema = z.object({
   reportText: z
     .string()
     .describe('The text content of the medical report to be interpreted.'),
+  language: z
+    .string()
+    .optional()
+    .describe(
+      'The language for the response (e.g., "English", "Spanish"). Defaults to English.'
+    ),
 });
 export type MedicalReportInput = z.infer<typeof MedicalReportInputSchema>;
 
@@ -39,6 +45,8 @@ const prompt = ai.definePrompt({
   output: {schema: MedicalReportOutputSchema},
   prompt: `You are a medical expert skilled at explaining complex medical reports in simple, non-technical terms.
 
+  Your response MUST be in the following language: {{{language}}}.
+
   Please provide a simplified explanation of the following medical report, focusing on the key findings and their potential implications. Use language that a layperson can easily understand. Always remind the user that this interpretation is not a substitute for professional medical advice, and they should consult with their doctor for further clarification.
 
   Medical Report:
@@ -53,7 +61,10 @@ const interpretMedicalReportFlow = ai.defineFlow(
     outputSchema: MedicalReportOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
+    const {output} = await prompt({
+      ...input,
+      language: input.language || 'English',
+    });
     return output!;
   }
 );

@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 import { Bot, Send, User, Loader2 } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
 import EmergencyAlertDialog from './emergency-alert-dialog';
+import { useLocale } from '@/hooks/use-locale';
 
 interface Message {
   role: 'user' | 'ai' | 'loading';
@@ -20,11 +21,11 @@ interface Message {
 }
 
 export default function ChatInterface() {
+  const { t, locale } = useLocale();
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'ai',
-      content:
-        'Hello! I am MediaID AI. How can I assist you with your health questions today?',
+      content: t('chat.initialMessage'),
     },
   ]);
   const [input, setInput] = useState('');
@@ -47,38 +48,41 @@ export default function ChatInterface() {
     if (!input.trim() || isLoading) return;
 
     const userInput = input;
-    setMessages((prev) => [...prev, { role: 'user', content: userInput }]);
+    setMessages(prev => [...prev, { role: 'user', content: userInput }]);
     setInput('');
     setIsLoading(true);
 
     try {
-      const emergencyResult = await detectEmergencyAction({ userInput });
+      const emergencyResult = await detectEmergencyAction({
+        userInput,
+        language: locale,
+      });
       if (emergencyResult.isEmergency) {
         setIsEmergency(true);
-        setMessages((prev) =>
-          prev.filter((msg) => msg.content !== userInput)
-        );
+        setMessages(prev => prev.filter(msg => msg.content !== userInput));
         setIsLoading(false);
         return;
       }
 
-      const aiResult = await medicalAIChatAction({ question: userInput });
+      const aiResult = await medicalAIChatAction({
+        question: userInput,
+        language: locale,
+      });
 
       if (aiResult.error) {
         throw new Error(aiResult.error);
       }
 
       const aiResponse = `${aiResult.answer}\n\n**${aiResult.disclaimer}**`;
-      setMessages((prev) => [...prev, { role: 'ai', content: aiResponse }]);
+      setMessages(prev => [...prev, { role: 'ai', content: aiResponse }]);
     } catch (error) {
       console.error(error);
       toast({
         variant: 'destructive',
-        title: 'An error occurred',
-        description:
-          'Failed to get a response from the AI. Please try again.',
+        title: t('chat.errorTitle'),
+        description: t('chat.errorMessage'),
       });
-      setMessages((prev) => prev.slice(0, prev.length -1));
+      setMessages(prev => prev.slice(0, prev.length - 1));
     } finally {
       setIsLoading(false);
     }
@@ -124,16 +128,16 @@ export default function ChatInterface() {
               </div>
             ))}
             {isLoading && (
-               <div className="flex items-start gap-4 justify-start">
-                  <Avatar className="border">
-                    <AvatarFallback>
-                      <Bot />
-                    </AvatarFallback>
-                  </Avatar>
-                   <div className="bg-muted rounded-lg p-3">
-                    <Loader2 className="animate-spin size-5"/>
-                   </div>
-               </div>
+              <div className="flex items-start gap-4 justify-start">
+                <Avatar className="border">
+                  <AvatarFallback>
+                    <Bot />
+                  </AvatarFallback>
+                </Avatar>
+                <div className="bg-muted rounded-lg p-3">
+                  <Loader2 className="animate-spin size-5" />
+                </div>
+              </div>
             )}
           </div>
         </ScrollArea>
@@ -141,15 +145,19 @@ export default function ChatInterface() {
           <form onSubmit={handleSubmit} className="flex items-center gap-2">
             <Input
               value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Type your message..."
+              onChange={e => setInput(e.target.value)}
+              placeholder={t('chat.inputPlaceholder')}
               className="flex-grow"
               disabled={isLoading}
               aria-label="Chat input"
             />
-            <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
+            <Button
+              type="submit"
+              size="icon"
+              disabled={isLoading || !input.trim()}
+            >
               <Send className="h-4 w-4" />
-              <span className="sr-only">Send</span>
+              <span className="sr-only">{t('chat.send')}</span>
             </Button>
           </form>
         </div>

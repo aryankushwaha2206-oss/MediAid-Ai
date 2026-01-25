@@ -29,6 +29,7 @@ import { z } from 'zod';
 
 const xRaySchema = z.object({
   photoDataUri: z.string().startsWith('data:image/'),
+  language: z.string().optional(),
 });
 
 export async function analyzeXRayImageAction(input: AnalyzeXRayImageInput) {
@@ -41,6 +42,7 @@ export async function analyzeXRayImageAction(input: AnalyzeXRayImageInput) {
 
 const emergencySchema = z.object({
   userInput: z.string().min(1),
+  language: z.string().optional(),
 });
 export async function detectEmergencyAction(input: EmergencyDetectionInput) {
   const parsed = emergencySchema.safeParse(input);
@@ -52,6 +54,7 @@ export async function detectEmergencyAction(input: EmergencyDetectionInput) {
 
 const reportSchema = z.object({
   reportText: z.string().min(10, 'Report text is too short.'),
+  language: z.string().optional(),
 });
 
 export async function interpretMedicalReportAction(
@@ -66,6 +69,7 @@ export async function interpretMedicalReportAction(
 
 const chatSchema = z.object({
   question: z.string().min(1),
+  language: z.string().optional(),
 });
 export async function medicalAIChatAction(input: MedicalAIChatInput) {
   const parsed = chatSchema.safeParse(input);
@@ -81,6 +85,7 @@ const symptomSchema = z.object({
   gender: z.string().optional(),
   duration: z.string().optional(),
   severity: z.string().optional(),
+  language: z.string().optional(),
 });
 export async function symptomBasedGuidanceAction(
   input: SymptomBasedGuidanceInput

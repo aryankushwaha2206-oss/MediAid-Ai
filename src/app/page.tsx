@@ -1,3 +1,4 @@
+'use client';
 import {
   Card,
   CardContent,
@@ -6,55 +7,63 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { ArrowRight, FileText, ListPlus, ScanLine, MessageSquare } from 'lucide-react';
+import {
+  ArrowRight,
+  FileText,
+  ListPlus,
+  ScanLine,
+  MessageSquare,
+} from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-
-const features = [
-  {
-    title: 'X-Ray Analysis',
-    description: 'Upload an X-ray to get an educational analysis.',
-    link: '/x-ray-analysis',
-    icon: <ScanLine className="size-8 text-primary" />,
-    image: PlaceHolderImages.find((img) => img.id === 'xray'),
-  },
-  {
-    title: 'Report Interpretation',
-    description: 'Paste a medical report for a simplified explanation.',
-    link: '/report-interpretation',
-    icon: <FileText className="size-8 text-primary" />,
-    image: PlaceHolderImages.find((img) => img.id === 'report'),
-  },
-  {
-    title: 'Symptom Checker',
-    description: 'Describe your symptoms for informational guidance.',
-    link: '/symptom-checker',
-    icon: <ListPlus className="size-8 text-primary" />,
-    image: PlaceHolderImages.find((img) => img.id === 'symptoms'),
-  },
-  {
-    title: 'Medical AI Chat',
-    description: 'Ask health-related questions in a supportive chat.',
-    link: '/chat',
-    icon: <MessageSquare className="size-8 text-primary" />,
-    image: PlaceHolderImages.find((img) => img.id === 'chat'),
-  },
-];
+import { useLocale } from '@/hooks/use-locale';
 
 export default function DashboardPage() {
+  const { t } = useLocale();
+  const features = [
+    {
+      title: t('dashboard.features.xray.title'),
+      description: t('dashboard.features.xray.description'),
+      link: '/x-ray-analysis',
+      icon: <ScanLine className="size-8 text-primary" />,
+      image: PlaceHolderImages.find(img => img.id === 'xray'),
+    },
+    {
+      title: t('dashboard.features.report.title'),
+      description: t('dashboard.features.report.description'),
+      link: '/report-interpretation',
+      icon: <FileText className="size-8 text-primary" />,
+      image: PlaceHolderImages.find(img => img.id === 'report'),
+    },
+    {
+      title: t('dashboard.features.symptoms.title'),
+      description: t('dashboard.features.symptoms.description'),
+      link: '/symptom-checker',
+      icon: <ListPlus className="size-8 text-primary" />,
+      image: PlaceHolderImages.find(img => img.id === 'symptoms'),
+    },
+    {
+      title: t('dashboard.features.chat.title'),
+      description: t('dashboard.features.chat.description'),
+      link: '/chat',
+      icon: <MessageSquare className="size-8 text-primary" />,
+      image: PlaceHolderImages.find(img => img.id === 'chat'),
+    },
+  ];
+
   return (
     <div className="space-y-8">
       <div className="space-y-2">
         <h1 className="text-3xl md:text-4xl font-bold font-headline">
-          Welcome to MediaID AI
+          {t('dashboard.welcome')}
         </h1>
         <p className="text-lg text-muted-foreground">
-          Your safety-focused medical AI assistant. How can I help you today?
+          {t('dashboard.description')}
         </p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
-        {features.map((feature) => (
+        {features.map(feature => (
           <Link href={feature.link} key={feature.title} className="group">
             <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardHeader className="p-0">
@@ -81,7 +90,8 @@ export default function DashboardPage() {
                   {feature.icon}
                 </div>
                 <div className="mt-6 flex items-center text-sm font-semibold text-primary group-hover:underline">
-                  Get Started <ArrowRight className="ml-2 size-4" />
+                  {t('dashboard.getStarted')}{' '}
+                  <ArrowRight className="ml-2 size-4" />
                 </div>
               </CardContent>
             </Card>

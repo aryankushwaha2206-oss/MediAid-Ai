@@ -5,19 +5,20 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { useLocale } from '@/hooks/use-locale';
 import { Loader2, FileText } from 'lucide-react';
 import React, { useState, useTransition } from 'react';
 import { z } from 'zod';
 
-const formSchema = z.object({
-  reportText: z.string().min(20, {
-    message: 'Medical report text must be at least 20 characters.',
-  }),
-});
-
-type FormData = z.infer<typeof formSchema>;
-
 export default function ReportInterpretationForm() {
+  const { t, locale } = useLocale();
+  const formSchema = z.object({
+    reportText: z.string().min(20, {
+      message: t('report.validationError'),
+    }),
+  });
+  type FormData = z.infer<typeof formSchema>;
+
   const [reportText, setReportText] = useState('');
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -38,12 +39,13 @@ export default function ReportInterpretationForm() {
     startTransition(async () => {
       const response = await interpretMedicalReportAction({
         reportText: validation.data.reportText,
+        language: locale,
       });
 
       if (response.error) {
         toast({
           variant: 'destructive',
-          title: 'An error occurred',
+          title: t('chat.errorTitle'),
           description: response.error,
         });
       } else if (response.simplifiedExplanation) {
@@ -57,8 +59,8 @@ export default function ReportInterpretationForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <Textarea
           value={reportText}
-          onChange={(e) => setReportText(e.target.value)}
-          placeholder="Paste the full text of your medical report here..."
+          onChange={e => setReportText(e.target.value)}
+          placeholder={t('report.placeholder')}
           className="min-h-[200px] text-base"
           aria-label="Medical Report Text"
         />
@@ -69,19 +71,19 @@ export default function ReportInterpretationForm() {
           ) : (
             <FileText className="mr-2 h-4 w-4" />
           )}
-          Interpret Report
+          {t('report.button')}
         </Button>
       </form>
 
       {isPending && (
         <Card>
           <CardHeader>
-            <CardTitle>Analyzing Report...</CardTitle>
+            <CardTitle>{t('report.analyzingTitle')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
             <p className="text-center text-muted-foreground">
-              Please wait while our AI interprets your report.
+              {t('report.analyzingDescription')}
             </p>
           </CardContent>
         </Card>
@@ -91,17 +93,15 @@ export default function ReportInterpretationForm() {
         <Card className="bg-blue-50/20 border-primary/20">
           <CardHeader>
             <CardTitle className="font-headline text-2xl">
-              Simplified Explanation
+              {t('report.resultTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 text-base">
             <p className="whitespace-pre-wrap">{result}</p>
             <div className="mt-4 rounded-md border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
               <p>
-                <strong>Disclaimer:</strong> This is not a professional medical
-                diagnosis and should be used for informational purposes only.
-                Always consult with a licensed doctor or qualified healthcare
-                provider for any medical concerns.
+                <strong>{t('report.disclaimer').split(':')[0]}:</strong>{' '}
+                {t('report.disclaimer').split(':').slice(1).join(':')}
               </p>
             </div>
           </CardContent>

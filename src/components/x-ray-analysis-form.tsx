@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { useLocale } from '@/hooks/use-locale';
 import { cn } from '@/lib/utils';
 import { AnalyzeXRayImageOutput } from '@/ai/flows/x-ray-image-analysis';
 import {
@@ -32,6 +33,7 @@ export default function XRayAnalysisForm() {
   const [result, setResult] = useState<AnalyzeXRayImageOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { t, locale } = useLocale();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
@@ -62,7 +64,10 @@ export default function XRayAnalysisForm() {
     setResult(null);
 
     try {
-      const response = await analyzeXRayImageAction({ photoDataUri: preview });
+      const response = await analyzeXRayImageAction({
+        photoDataUri: preview,
+        language: locale,
+      });
       if (response.error) {
         throw new Error(response.error);
       }
@@ -79,30 +84,37 @@ export default function XRayAnalysisForm() {
       setIsLoading(false);
     }
   };
-  
-  const ConcernLevelInfo = ({ level }: { level: 'low' | 'moderate' | 'high' }) => {
+
+  const ConcernLevelInfo = ({
+    level,
+  }: {
+    level: 'low' | 'moderate' | 'high';
+  }) => {
     const info = {
       low: {
         icon: <ShieldCheck className="h-5 w-5 text-green-500" />,
-        text: 'Low Concern',
+        text: t('xray.analysis.concernLevel.low'),
         variant: 'default',
         className: 'bg-green-100 text-green-800 border-green-200',
       },
       moderate: {
         icon: <CircleHelp className="h-5 w-5 text-amber-500" />,
-        text: 'Moderate Concern',
+        text: t('xray.analysis.concernLevel.moderate'),
         variant: 'secondary',
         className: 'bg-amber-100 text-amber-800 border-amber-200',
       },
       high: {
         icon: <AlertTriangle className="h-5 w-5 text-red-500" />,
-        text: 'High Concern',
+        text: t('xray.analysis.concernLevel.high'),
         variant: 'destructive',
       },
     };
     const current = info[level];
     return (
-      <Badge variant={current.variant} className={cn('text-base', current.className)}>
+      <Badge
+        variant={current.variant}
+        className={cn('text-base', current.className)}
+      >
         {current.icon}
         <span className="ml-2">{current.text}</span>
       </Badge>
@@ -113,10 +125,8 @@ export default function XRayAnalysisForm() {
     <div className="grid gap-8 md:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle>Upload Image</CardTitle>
-          <CardDescription>
-            Drop your X-ray image here or click to upload.
-          </CardDescription>
+          <CardTitle>{t('xray.upload.title')}</CardTitle>
+          <CardDescription>{t('xray.upload.description')}</CardDescription>
         </CardHeader>
         <CardContent>
           {!preview ? (
@@ -132,11 +142,11 @@ export default function XRayAnalysisForm() {
                 <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
                 <p className="mt-2 text-sm text-muted-foreground">
                   {isDragActive
-                    ? 'Drop the image here...'
-                    : "Drag 'n' drop an image, or click to select"}
+                    ? t('xray.upload.dragActive')
+                    : t('xray.upload.dragInactive')}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  (PNG, JPG, JPEG)
+                  {t('xray.upload.fileTypes')}
                 </p>
               </div>
             </div>
@@ -156,7 +166,7 @@ export default function XRayAnalysisForm() {
                 onClick={handleClear}
               >
                 <X className="h-4 w-4" />
-                <span className="sr-only">Clear image</span>
+                <span className="sr-only">{t('xray.upload.clear')}</span>
               </Button>
             </div>
           )}
@@ -172,7 +182,7 @@ export default function XRayAnalysisForm() {
             ) : (
               <FileImage className="mr-2 h-4 w-4" />
             )}
-            Analyze Image
+            {t('xray.upload.button')}
           </Button>
         </CardFooter>
       </Card>
@@ -181,27 +191,49 @@ export default function XRayAnalysisForm() {
         {isLoading && (
           <Card className="flex flex-col items-center justify-center p-10">
             <Loader2 className="h-16 w-16 animate-spin text-primary" />
-            <p className="mt-4 text-lg font-semibold">Analyzing...</p>
+            <p className="mt-4 text-lg font-semibold">
+              {t('xray.analysis.analyzingTitle')}
+            </p>
             <p className="text-muted-foreground">
-              Our AI is looking at your image. This may take a moment.
+              {t('xray.analysis.analyzingDescription')}
             </p>
           </Card>
         )}
         {result && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl font-headline">Analysis Results</CardTitle>
+              <CardTitle className="text-2xl font-headline">
+                {t('xray.analysis.resultsTitle')}
+              </CardTitle>
               <CardDescription>
                 <ConcernLevelInfo level={result.concernLevel} />
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-base whitespace-pre-wrap">{result.explanation}</p>
+              <p className="text-base whitespace-pre-wrap">
+                {result.explanation}
+              </p>
             </CardContent>
             <CardFooter>
-                <div className="w-full text-xs text-muted-foreground border-t pt-4">
-                  <p><strong>Disclaimer:</strong> {result.disclaimer}</p>
-                </div>
+              <div className="w-full text-xs text-muted-foreground border-t pt-4">
+                <p>
+                  <strong>
+                    {t('xray.analysis.disclaimer', {
+                      disclaimerText: result.disclaimer,
+                    }).split(':')[0]}
+                    :
+                  </strong>
+                  {' '}
+                  {
+                    t('xray.analysis.disclaimer', {
+                      disclaimerText: result.disclaimer,
+                    })
+                      .split(':')
+                      .slice(1)
+                      .join(':')
+                  }
+                </p>
+              </div>
             </CardFooter>
           </Card>
         )}

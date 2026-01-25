@@ -9,6 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { useLocale } from '@/hooks/use-locale';
 import { Siren } from 'lucide-react';
 
 interface EmergencyAlertDialogProps {
@@ -20,6 +21,7 @@ export default function EmergencyAlertDialog({
   open,
   onOpenChange,
 }: EmergencyAlertDialogProps) {
+  const { t } = useLocale();
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
@@ -28,23 +30,18 @@ export default function EmergencyAlertDialog({
             <Siren className="h-6 w-6 text-red-600" aria-hidden="true" />
           </div>
           <AlertDialogTitle className="text-center text-xl">
-            Potential Emergency Detected
+            {t('emergency.title')}
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center">
-            Based on your input, your situation may require immediate medical
-            attention.
+            {t('emergency.description')}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="p-4 bg-red-50/50 border border-red-200 rounded-md text-sm text-red-800">
-          <p>
-            Please do not delay seeking care. Contact your local emergency
-            services, go to the nearest emergency room, or consult a healthcare
-            professional immediately.
-          </p>
+          <p>{t('emergency.advice')}</p>
         </div>
         <AlertDialogFooter>
           <AlertDialogAction onClick={() => onOpenChange(false)}>
-            I Understand
+            {t('emergency.understand')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

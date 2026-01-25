@@ -1,0 +1,123 @@
+{
+  "sidebar": {
+    "dashboard": "Tablero",
+    "xrayAnalysis": "Análisis de Rayos-X",
+    "reportInterpretation": "Interpretación de Informes",
+    "symptomChecker": "Verificador de Síntomas",
+    "medicalChat": "Chat Médico",
+    "help": "Ayuda y Soporte",
+    "settings": "Configuración",
+    "language": "Idioma"
+  },
+  "dashboard": {
+    "welcome": "Bienvenido a MediaID AI",
+    "description": "Su asistente médico de IA centrado en la seguridad. ¿Cómo puedo ayudarle hoy?",
+    "getStarted": "Empezar",
+    "features": {
+      "xray": {
+        "title": "Análisis de Rayos-X",
+        "description": "Suba una radiografía para obtener un análisis educativo."
+      },
+      "report": {
+        "title": "Interpretación de Informes",
+        "description": "Pegue un informe médico para una explicación simplificada."
+      },
+      "symptoms": {
+        "title": "Verificador de Síntomas",
+        "description": "Describa sus síntomas para obtener una guía informativa."
+      },
+      "chat": {
+        "title": "Chat Médico con IA",
+        "description": "Haga preguntas relacionadas con la salud en un chat de apoyo."
+      }
+    }
+  },
+  "chat": {
+    "title": "Chat Médico con IA",
+    "description": "Haga sus preguntas de salud en un espacio seguro y de apoyo.",
+    "initialMessage": "¡Hola! Soy MediaID AI. ¿Cómo puedo ayudarle con sus preguntas de salud hoy?",
+    "inputPlaceholder": "Escriba su mensaje...",
+    "send": "Enviar",
+    "errorTitle": "Ocurrió un error",
+    "errorMessage": "No se pudo obtener una respuesta de la IA. Por favor, inténtelo de nuevo."
+  },
+  "emergency": {
+    "title": "Posible Emergencia Detectada",
+    "description": "Según su entrada, su situación puede requerir atención médica inmediata.",
+    "advice": "Por favor, no demore en buscar atención. Comuníquese con los servicios de emergencia locales, vaya a la sala de emergencias más cercana o consulte a un profesional de la salud de inmediato.",
+    "understand": "Entiendo"
+  },
+  "report": {
+    "title": "Interpretación de Informes Médicos",
+    "description": "Pegue su informe médico a continuación para obtener una explicación simplificada y fácil de entender.",
+    "placeholder": "Pegue el texto completo de su informe médico aquí...",
+    "validationError": "El texto del informe médico debe tener al menos 20 caracteres.",
+    "button": "Interpretar Informe",
+    "analyzingTitle": "Analizando Informe...",
+    "analyzingDescription": "Por favor espere mientras nuestra IA interpreta su informe.",
+    "resultTitle": "Explicación Simplificada",
+    "disclaimer": "Descargo de responsabilidad: Este no es un diagnóstico médico profesional y debe usarse solo con fines informativos. Siempre consulte con un médico licenciado o un proveedor de atención médica calificado para cualquier inquietud médica."
+  },
+  "symptoms": {
+    "title": "Orientación Basada en Síntomas",
+    "description": "Describa sus síntomas para recibir una lista de posibles causas con fines informativos.",
+    "form": {
+      "symptomsLabel": "Describa sus síntomas",
+      "symptomsPlaceholder": "Ej: 'Tengo una tos persistente, fiebre leve y me siento muy cansado.'",
+      "symptomsValidationError": "Por favor describa sus síntomas en al menos 10 caracteres.",
+      "ageLabel": "Edad",
+      "agePlaceholder": "Ej: 34",
+      "genderLabel": "Género",
+      "genderPlaceholder": "Seleccione género",
+      "genders": {
+        "male": "Masculino",
+        "female": "Femenino",
+        "other": "Otro"
+      },
+      "durationLabel": "Duración",
+      "durationPlaceholder": "Ej: '3 días'",
+      "severityLabel": "Gravedad",
+      "severityPlaceholder": "Seleccione gravedad",
+      "severities": {
+        "mild": "Leve",
+        "moderate": "Moderado",
+        "severe": "Grave"
+      },
+      "button": "Obtener Orientación"
+    },
+    "results": {
+      "title": "Posibles Causas",
+      "urgency": "Urgencia: {level}",
+      "levels": {
+        "routine": "rutina",
+        "consult-soon": "consultar pronto",
+        "emergency": "emergencia"
+      }
+    },
+    "disclaimer": "Descargo de responsabilidad: MediaID AI proporciona información y conocimientos de salud educativos e informativos únicamente. Esto no es un diagnóstico médico profesional y no debe utilizarse como sustituto de la consulta, el diagnóstico o el tratamiento por parte de un médico licenciado o un proveedor de atención médica calificado."
+  },
+  "xray": {
+    "title": "Análisis de Rayos-X e Imágenes",
+    "description": "Suba una imagen de rayos X para un análisis educativo. Esta herramienta es solo para fines informativos.",
+    "upload": {
+      "title": "Subir Imagen",
+      "description": "Suelte su imagen de rayos X aquí o haga clic para subir.",
+      "dragActive": "Suelte la imagen aquí...",
+      "dragInactive": "Arrastre y suelte una imagen, o haga clic para seleccionar",
+      "fileTypes": "(PNG, JPG, JPEG)",
+      "clear": "Limpiar imagen",
+      "button": "Analizar Imagen"
+    },
+    "analysis": {
+      "analyzingTitle": "Analizando...",
+      "analyzingDescription": "Nuestra IA está mirando su imagen. Esto puede tardar un momento.",
+      "resultsTitle": "Resultados del Análisis",
+      "concernLevel": {
+        "low": "Preocupación Baja",
+        "moderate": "Preocupación Moderada",
+        "high": "Preocupación Alta"
+      },
+      "disclaimer": "Descargo de responsabilidad: {disclaimerText}"
+    }
+  }
+}
