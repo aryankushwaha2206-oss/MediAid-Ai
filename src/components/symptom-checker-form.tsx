@@ -15,6 +15,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -38,19 +39,24 @@ import {
   Activity,
   BadgeCheck,
   Clock,
+  Upload,
+  X,
 } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import EmergencyAlertDialog from './emergency-alert-dialog';
 import { SymptomBasedGuidanceOutput } from '@/ai/flows/symptom-based-guidance';
 import { Badge } from './ui/badge';
 import { cn } from '@/lib/utils';
+import { useDropzone } from 'react-dropzone';
+import Image from 'next/image';
 
 export default function SymptomCheckerForm() {
   const { t, locale } = useLocale();
   const formSchema = z.object({
     symptoms: z.string().min(10, t('symptoms.form.symptomsValidationError')),
+    photoDataUri: z.string().optional(),
     age: z.coerce.number().min(0).optional(),
     gender: z.string().optional(),
     duration: z.string().optional(),
@@ -64,6 +70,7 @@ export default function SymptomCheckerForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [isEmergency, setIsEmergency] = useState(false);
   const { toast } = useToast();
+  const [preview, setPreview] = useState<string | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -71,6 +78,32 @@ export default function SymptomCheckerForm() {
       symptoms: '',
     },
   });
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreview(reader.result as string);
+          form.setValue('photoDataUri', reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    [form]
+  );
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: { 'image/*': ['.jpeg', '.png', '.jpg'] },
+    multiple: false,
+  });
+
+  const handleClearImage = () => {
+    setPreview(null);
+    form.setValue('photoDataUri', undefined);
+  };
 
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
@@ -131,25 +164,89 @@ export default function SymptomCheckerForm() {
         <CardContent className="p-6">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="symptoms"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-base">
-                      {t('symptoms.form.symptomsLabel')}
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder={t('symptoms.form.symptomsPlaceholder')}
-                        className="min-h-[120px]"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <FormField
+                  control={form.control}
+                  name="symptoms"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base">
+                        {t('symptoms.form.symptomsLabel')}
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder={t('symptoms.form.symptomsPlaceholder')}
+                          className="min-h-[120px] md:min-h-[240px]"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="photoDataUri"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base">
+                        {t('symptoms.form.photoLabel')}
+                      </FormLabel>
+                      <FormControl>
+                        {!preview ? (
+                          <div
+                            {...getRootProps()}
+                            className={cn(
+                              'flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-lg cursor-pointer hover:border-primary transition-colors h-full',
+                              isDragActive
+                                ? 'border-primary bg-primary/10'
+                                : 'border-border hover:bg-primary/5'
+                            )}
+                          >
+                            <input {...getInputProps()} />
+                            <div className="text-center">
+                              <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
+                              <p className="mt-2 text-sm text-muted-foreground">
+                                {isDragActive
+                                  ? t('xray.upload.dragActive')
+                                  : t('xray.upload.dragInactive')}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {t('xray.upload.fileTypes')}
+                              </p>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="relative">
+                            <Image
+                              src={preview}
+                              alt="Symptom preview"
+                              width={500}
+                              height={500}
+                              className="rounded-lg object-contain w-full max-h-60"
+                            />
+                            <Button
+                              variant="destructive"
+                              size="icon"
+                              className="absolute top-2 right-2 h-8 w-8"
+                              onClick={handleClearImage}
+                            >
+                              <X className="h-4 w-4" />
+                              <span className="sr-only">
+                                {t('xray.upload.clear')}
+                              </span>
+                            </Button>
+                          </div>
+                        )}
+                      </FormControl>
+                      <FormDescription>
+                        {t('symptoms.form.photoDescription')}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                 <FormField
@@ -163,6 +260,7 @@ export default function SymptomCheckerForm() {
                           type="number"
                           placeholder={t('symptoms.form.agePlaceholder')}
                           {...field}
+                          value={field.value || ''}
                         />
                       </FormControl>
                       <FormMessage />
@@ -214,6 +312,7 @@ export default function SymptomCheckerForm() {
                         <Input
                           placeholder={t('symptoms.form.durationPlaceholder')}
                           {...field}
+                          value={field.value || ''}
                         />
                       </FormControl>
                       <FormMessage />
@@ -305,7 +404,9 @@ export default function SymptomCheckerForm() {
                           'bg-amber-100 text-amber-800 border-amber-200'
                       )}
                     >
-                      {t('symptoms.results.urgency', { level: getUrgencyLevelText(item.urgency) })}
+                      {t('symptoms.results.urgency', {
+                        level: getUrgencyLevelText(item.urgency),
+                      })}
                     </Badge>
                   </CardDescription>
                 </CardHeader>

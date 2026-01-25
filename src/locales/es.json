@@ -39,7 +39,8 @@
     "inputPlaceholder": "Escriba su mensaje...",
     "send": "Enviar",
     "errorTitle": "Ocurrió un error",
-    "errorMessage": "No se pudo obtener una respuesta de la IA. Por favor, inténtelo de nuevo."
+    "errorMessage": "No se pudo obtener una respuesta de la IA. Por favor, inténtelo de nuevo.",
+    "attachFile": "Adjuntar archivo"
   },
   "emergency": {
     "title": "Posible Emergencia Detectada",
@@ -65,6 +66,8 @@
       "symptomsLabel": "Describa sus síntomas",
       "symptomsPlaceholder": "Ej: 'Tengo una tos persistente, fiebre leve y me siento muy cansado.'",
       "symptomsValidationError": "Por favor describa sus síntomas en al menos 10 caracteres.",
+      "photoLabel": "Añadir una foto (opcional)",
+      "photoDescription": "Una imagen puede ayudar a nuestra IA a comprender mejor su síntoma.",
       "ageLabel": "Edad",
       "agePlaceholder": "Ej: 34",
       "genderLabel": "Género",

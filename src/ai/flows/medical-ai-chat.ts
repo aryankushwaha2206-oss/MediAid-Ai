@@ -13,6 +13,12 @@ import {z} from 'genkit';
 
 const MedicalAIChatInputSchema = z.object({
   question: z.string().describe('The user’s health-related question.'),
+  photoDataUri: z
+    .string()
+    .optional()
+    .describe(
+      "An optional photo, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
+    ),
   language: z
     .string()
     .optional()
@@ -55,6 +61,11 @@ Your response MUST be in the following language: {{{language}}}.
 Answer the following question:
 {{{question}}}
 
+{{#if photoDataUri}}
+Also consider the following image provided by the user:
+{{media url=photoDataUri}}
+{{/if}}
+
 Include the following disclaimer in the output: Disclaimer: MediaID AI provides educational and informational health insights only. This is not a professional medical diagnosis and must not be used as a substitute for consultation, diagnosis, or treatment by a licensed doctor or qualified healthcare provider.
 
 Do not suggest any treatment plan, and do not provide any diagnosis.`,
@@ -68,7 +79,7 @@ const medicalAIChatFlow = ai.defineFlow(
   },
   async input => {
     const {output} = await prompt({
-      question: input.question,
+      ...input,
       language: input.language || 'English',
     });
     return {

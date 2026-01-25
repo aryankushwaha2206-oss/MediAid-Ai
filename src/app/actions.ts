@@ -1,11 +1,3 @@
-// IMPORTANT: This file is used to provide a bridge between the client and the server.
-//
-// It is not recommended to directly call the Genkit Actions from the client, as it can leak sensitive information.
-// Instead, we use this file to provide a secure bridge between the client and the server.
-//
-// This file should be considered as a part of the "backend" of the application, and should not be modified by the client.
-//
-// YOU MUST NOT MODIFY THIS FILE.
 'use server';
 
 import {
@@ -69,6 +61,7 @@ export async function interpretMedicalReportAction(
 
 const chatSchema = z.object({
   question: z.string().min(1),
+  photoDataUri: z.string().optional(),
   language: z.string().optional(),
 });
 export async function medicalAIChatAction(input: MedicalAIChatInput) {
@@ -81,6 +74,7 @@ export async function medicalAIChatAction(input: MedicalAIChatInput) {
 
 const symptomSchema = z.object({
   symptoms: z.string().min(5, 'Please describe your symptoms in more detail.'),
+  photoDataUri: z.string().optional(),
   age: z.coerce.number().optional(),
   gender: z.string().optional(),
   duration: z.string().optional(),

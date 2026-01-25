@@ -39,7 +39,8 @@
     "inputPlaceholder": "Type your message...",
     "send": "Send",
     "errorTitle": "An error occurred",
-    "errorMessage": "Failed to get a response from the AI. Please try again."
+    "errorMessage": "Failed to get a response from the AI. Please try again.",
+    "attachFile": "Attach File"
   },
   "emergency": {
     "title": "Potential Emergency Detected",
@@ -65,6 +66,8 @@
       "symptomsLabel": "Describe your symptoms",
       "symptomsPlaceholder": "e.g., 'I have a persistent cough, slight fever, and feel very tired.'",
       "symptomsValidationError": "Please describe your symptoms in at least 10 characters.",
+      "photoLabel": "Add a photo (optional)",
+      "photoDescription": "A picture can help our AI understand your symptom better.",
       "ageLabel": "Age",
       "agePlaceholder": "e.g., 34",
       "genderLabel": "Gender",

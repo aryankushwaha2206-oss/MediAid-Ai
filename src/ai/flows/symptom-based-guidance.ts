@@ -14,13 +14,24 @@ const SymptomBasedGuidanceInputSchema = z.object({
   symptoms: z
     .string()
     .describe('A detailed description of the experienced symptoms.'),
+  photoDataUri: z
+    .string()
+    .optional()
+    .describe(
+      "An optional photo of the symptom, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
+    ),
   age: z.number().optional().describe('The age of the user.'),
   gender: z.string().optional().describe('The gender of the user.'),
-  duration: z.string().optional().describe('How long the symptoms have been present.'),
+  duration: z
+    .string()
+    .optional()
+    .describe('How long the symptoms have been present.'),
   severity: z
     .string()
     .optional()
-    .describe('The severity level of the symptoms (e.g., mild, moderate, severe).'),
+    .describe(
+      'The severity level of the symptoms (e.g., mild, moderate, severe).'
+    ),
   language: z
     .string()
     .optional()
@@ -54,7 +65,9 @@ const SymptomBasedGuidanceOutputSchema = z.object({
     ),
   disclaimer: z
     .string()
-    .describe('Mandatory disclaimer about the informational nature of the guidance.'),
+    .describe(
+      'Mandatory disclaimer about the informational nature of the guidance.'
+    ),
 });
 export type SymptomBasedGuidanceOutput = z.infer<
   typeof SymptomBasedGuidanceOutputSchema
@@ -80,6 +93,11 @@ const prompt = ai.definePrompt({
   Gender: {{{gender}}}
   Duration: {{{duration}}}
   Severity: {{{severity}}}
+
+  {{#if photoDataUri}}
+  Also consider the following image provided by the user:
+  {{media url=photoDataUri}}
+  {{/if}}
 
   Provide a ranked list of possible causes, with an associated urgency level (routine, consult soon, emergency) for each.
   Include a rationale for each possible cause based on the provided symptoms.
