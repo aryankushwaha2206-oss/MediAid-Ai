@@ -25,7 +25,7 @@ const SymptomBasedGuidanceInputSchema = z.object({
     .string()
     .optional()
     .describe(
-      'The language for the response (e.g., "English", "Spanish"). Defaults to English.'
+      'The language for the response (e.g., "English", "Spanish", "Hindi"). Defaults to English.'
     ),
 });
 export type SymptomBasedGuidanceInput = z.infer<

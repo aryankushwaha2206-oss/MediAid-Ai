@@ -10,7 +10,7 @@ const EmergencyDetectionInputSchema = z.object({
   language: z
     .string()
     .optional()
-    .describe('The language for the response (e.g., "English", "Spanish").'),
+    .describe('The language for the response (e.g., "English", "Spanish", "Hindi").'),
 });
 export type EmergencyDetectionInput = z.infer<
   typeof EmergencyDetectionInputSchema

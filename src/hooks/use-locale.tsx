@@ -9,10 +9,11 @@ import React, {
 } from 'react';
 import en from '@/locales/en.json';
 import es from '@/locales/es.json';
+import hi from '@/locales/hi.json';
 
-const translations = { en, es };
+const translations = { en, es, hi };
 
-type Locale = 'en' | 'es';
+type Locale = 'en' | 'es' | 'hi';
 
 type LocaleContextType = {
   locale: Locale;

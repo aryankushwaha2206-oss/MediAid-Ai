@@ -18,7 +18,7 @@ export default function LanguageSwitcher() {
       <Globe className="size-4" />
       <Select
         value={locale}
-        onValueChange={value => setLocale(value as 'en' | 'es')}
+        onValueChange={value => setLocale(value as 'en' | 'es' | 'hi')}
       >
         <SelectTrigger className="w-full border-0 focus:ring-0 group-data-[collapsible=icon]:hidden">
           <SelectValue placeholder={t('sidebar.language')} />
@@ -26,6 +26,7 @@ export default function LanguageSwitcher() {
         <SelectContent>
           <SelectItem value="en">English</SelectItem>
           <SelectItem value="es">Español</SelectItem>
+          <SelectItem value="hi">हिन्दी</SelectItem>
         </SelectContent>
       </Select>
     </div>
