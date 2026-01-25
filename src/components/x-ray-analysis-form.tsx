@@ -134,7 +134,7 @@ export default function XRayAnalysisForm() {
               {...getRootProps()}
               className={cn(
                 'flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-lg cursor-pointer hover:border-primary transition-colors',
-                isDragActive ? 'border-primary bg-primary/10' : 'border-border'
+                isDragActive ? 'border-primary bg-primary/10' : 'border-border hover:bg-primary/5'
               )}
             >
               <input {...getInputProps()} />
