@@ -1,3 +1,28 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "xray",
+      "description": "An X-ray image of a human chest area.",
+      "imageUrl": "https://images.unsplash.com/photo-1758691461957-13aff0c37c6f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxtZWRpY2FsJTIweC1yYXl8ZW58MHx8fHwxNzY5MzQwNzI5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "medical x-ray"
+    },
+    {
+      "id": "report",
+      "description": "A person reviewing a medical document.",
+      "imageUrl": "https://images.unsplash.com/photo-1758656993609-f7a7b224576b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtZWRpY2FsJTIwZG9jdW1lbnR8ZW58MHx8fHwxNzY5MzQwNzMwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "medical document"
+    },
+    {
+      "id": "symptoms",
+      "description": "A person looking unwell, holding a thermometer.",
+      "imageUrl": "https://images.unsplash.com/photo-1590563152409-05e528c681dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwZXJzb24lMjBzaWNrfGVufDB8fHx8MTc2OTM0MDczMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person sick"
+    },
+    {
+      "id": "chat",
+      "description": "A friendly doctor talking to a patient.",
+      "imageUrl": "https://images.unsplash.com/photo-1666214278797-b2cc1b12be76?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxkb2N0b3IlMjBwYXRpZW50fGVufDB8fHx8MTc2OTMzMjkyMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "doctor patient"
+    }
+  ]
 }
