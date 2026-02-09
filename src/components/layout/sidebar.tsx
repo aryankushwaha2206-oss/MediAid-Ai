@@ -17,6 +17,7 @@ import {
   ListPlus,
   LifeBuoy,
   Settings,
+  Zap,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -73,6 +74,18 @@ export default function AppSidebar() {
       </SidebarMenu>
       <SidebarFooter>
         <SidebarMenu>
+           <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              isActive={pathname === '/pricing'}
+              tooltip={t('sidebar.pricing')}
+            >
+              <Link href="/pricing">
+                <Zap />
+                <span>{t('sidebar.pricing')}</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <LanguageSwitcher />
           </SidebarMenuItem>

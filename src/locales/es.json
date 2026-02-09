@@ -7,7 +7,8 @@
     "medicalChat": "Chat Médico",
     "help": "Ayuda y Soporte",
     "settings": "Configuración",
-    "language": "Idioma"
+    "language": "Idioma",
+    "pricing": "Actualizar a Pro"
   },
   "dashboard": {
     "welcome": "Bienvenido a MediaID AI",
@@ -121,6 +122,50 @@
         "high": "Preocupación Alta"
       },
       "disclaimer": "Descargo de responsabilidad: {disclaimerText}"
+    }
+  },
+  "pricing": {
+    "title": "Encuentre el Plan Adecuado para Usted",
+    "description": "Comience gratis y actualice para desbloquear potentes conocimientos de salud con IA.",
+    "monthly": "Mensual",
+    "yearly": "Anual",
+    "perMonth": "/mes",
+    "perYear": "/año",
+    "plans": {
+      "free": {
+        "name": "Plan Gratuito",
+        "description": "Genere confianza + descargas",
+        "features": {
+          "symptomChecker": "Verificador de síntomas básico (uso diario limitado)",
+          "aiChat": "Chat médico con IA (3–5 preguntas/día)",
+          "healthTips": "Consejos de salud generales",
+          "reportUpload": "Carga de informes (solo ver resumen)"
+        },
+        "cta": "Comience Gratis"
+      },
+      "basic": {
+        "name": "Plan Básico",
+        "description": "Para estudiantes, familias y usuarios habituales.",
+        "features": {
+          "symptomChecks": "Verificaciones de síntomas ilimitadas",
+          "reportAnalysis": "Análisis completo de informes (análisis de sangre, hemograma, tiroides, etc.)",
+          "aiChat": "Chat médico con IA (límites razonables)",
+          "historyStorage": "Almacenamiento del historial de salud"
+        },
+        "cta": "Elegir Básico"
+      },
+      "pro": {
+        "name": "Plan Pro / AI+",
+        "description": "Para el usuario serio y consciente de su salud.",
+        "features": {
+          "everythingInBasic": "Todo en el Plan Básico",
+          "imagingAnalysis": "Análisis de rayos X / tomografía computarizada / resonancia magnética con IA",
+          "priorityResponses": "Respuestas de IA prioritarias",
+          "riskPrediction": "Predicción del riesgo de enfermedades",
+          "downloadableReports": "Informes de salud descargables (PDF)"
+        },
+        "cta": "Actualizar a Pro"
+      }
     }
   }
 }

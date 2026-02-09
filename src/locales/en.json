@@ -7,7 +7,8 @@
     "medicalChat": "Medical Chat",
     "help": "Help & Support",
     "settings": "Settings",
-    "language": "Language"
+    "language": "Language",
+    "pricing": "Upgrade to Pro"
   },
   "dashboard": {
     "welcome": "Welcome to MediaID AI",
@@ -121,6 +122,50 @@
         "high": "High Concern"
       },
       "disclaimer": "Disclaimer: {disclaimerText}"
+    }
+  },
+  "pricing": {
+    "title": "Find the Plan That's Right for You",
+    "description": "Start for free and upgrade to unlock powerful AI health insights.",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "perMonth": "/month",
+    "perYear": "/year",
+    "plans": {
+      "free": {
+        "name": "Free Plan",
+        "description": "Build trust + downloads",
+        "features": {
+          "symptomChecker": "Basic symptom checker (limited daily use)",
+          "aiChat": "AI medical chat (3–5 questions/day)",
+          "healthTips": "General health tips",
+          "reportUpload": "Report upload (view summary only)"
+        },
+        "cta": "Get Started for Free"
+      },
+      "basic": {
+        "name": "Basic Plan",
+        "description": "For students, families, and regular users.",
+        "features": {
+          "symptomChecks": "Unlimited symptom checks",
+          "reportAnalysis": "Full report analysis (blood test, CBC, thyroid, etc.)",
+          "aiChat": "AI medical chat (reasonable limits)",
+          "historyStorage": "Health history storage"
+        },
+        "cta": "Choose Basic"
+      },
+      "pro": {
+        "name": "Pro / AI+ Plan",
+        "description": "For the serious health-conscious user.",
+        "features": {
+          "everythingInBasic": "Everything in Basic",
+          "imagingAnalysis": "X-ray / CT / MRI AI analysis",
+          "priorityResponses": "Priority AI responses",
+          "riskPrediction": "Disease risk prediction",
+          "downloadableReports": "Downloadable health reports (PDF)"
+        },
+        "cta": "Upgrade to Pro"
+      }
     }
   }
 }
