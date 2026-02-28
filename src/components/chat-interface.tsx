@@ -95,9 +95,10 @@ export default function ChatInterface() {
         language: locale,
       });
 
-      if (aiResult.error) {
-        throw new Error(aiResult.error);
-      }
+    if ("error" in aiResult) {
+  throw new Error(aiResult.error);
+}
+      
 
       const aiResponse = `${aiResult.answer}\n\n**${aiResult.disclaimer}**`;
       setMessages(prev => [...prev, { role: 'ai', content: aiResponse }]);
