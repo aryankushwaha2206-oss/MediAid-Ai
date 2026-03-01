@@ -42,11 +42,19 @@ export default function ReportInterpretationForm() {
         language: locale,
       });
 
-      if ("error" in response && response.error) {
-          variant: 'destructive',
-          title: t('chat.errorTitle'),
-          description: response.error,
-        });
+      if if ("error" in response && response.error) {
+  toast({
+    variant: "destructive",
+    title: t("chat.errorTitle"),
+    description: response.error,
+  });
+} else if (response.simplifiedExplanation) {
+  toast({
+    title: t("chat.successTitle"),
+    description: response.simplifiedExplanation,
+  });
+}
+        
       } else if (response.simplifiedExplanation) {
         setResult(response.simplifiedExplanation);
       }
@@ -63,6 +71,7 @@ export default function ReportInterpretationForm() {
           className="min-h-[200px] text-base"
           aria-label="Medical Report Text"
         />
+        
         {error && <p className="text-sm font-medium text-destructive">{error}</p>}
         <Button type="submit" disabled={isPending} className="w-full md:w-auto">
           {isPending ? (
