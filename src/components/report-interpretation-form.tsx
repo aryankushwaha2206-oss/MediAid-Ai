@@ -42,7 +42,7 @@ export default function ReportInterpretationForm() {
         language: locale,
       });
 
-      if if ("error" in response && response.error) {
+      if ("error" in response && response.error) {
           variant: 'destructive',
           title: t('chat.errorTitle'),
           description: response.error,
