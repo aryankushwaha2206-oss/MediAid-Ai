@@ -42,12 +42,18 @@ export default function ReportInterpretationForm() {
         language: locale,
       });
 
-      if if ("error" in response && response.error) {
+      if ("error" in response && response.error) {
   toast({
     variant: "destructive",
     title: t("chat.errorTitle"),
     description: response.error,
   });
+} else if (response.simplifiedExplanation) {
+  toast({
+    title: t("chat.successTitle"),
+    description: response.simplifiedExplanation,
+  });
+}
 } else if (response.simplifiedExplanation) {
   toast({
     title: t("chat.successTitle"),
